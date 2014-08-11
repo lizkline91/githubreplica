@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+  <meta charset="UTF-8">
+  <title>Underscore Demo</title>
+  <link rel="stylesheet" href="styles/styles.css">
+  <link rel="stylesheet" href="styles/octicons/octicons.css">
+
+    <script type="template/html" id="profTmpl">
+      <% _.each(githubData, function(element, index, list) { %>
+        <img style="width:230px;" src="<%= element.avatar_url %>">
+        <h1><%= element.name %></h1>
+        <h2><%= element.login %></h1>
+        <ul class='user-details'>
+          <li class='user-detail'><span class="octicon octicon-organization"></span> <%element.organization%> <%= element.company %></li>
+          <li class='user-detail'><span class="octicon octicon-location"></span> <%element.location%> <%= element.location %></li>
+          <li class='user-detail'><span class="octicon octicon-mail"></span> <%element.mail%><%= element.email %> </li>
+          <li class='user-detail'><span class="octicon octicon-clock"></span> <%element.clock%> <%= element.joined %></li>
+        </ul>
+        <div class="user-stats">
+          <a class="user-stat" href="/lizkline91/followers"><strong class="user-stat-count"><%= element.followers%></strong>Followers</a>
+          <a class="user-stat" href="/stars"><strong class="user-stat-count">0</strong>Starred</a>
+          <a class="user-stat" href="/lizkline91/following"><strong class="user-stat-count"><%= element.following%></strong>Following</a>
+        </div>
+        <div class="user-orgs">
+          <h3>Organizations</h3>
+          <div class="avatars"></div>
+            <a href="/tiy-chs-q4-fee" aria-label="tiy-chs-q4-fee" class="user-org-avatar tooltipped tooltipped-s" itemprop="follows">
+              <img alt="tiy-chs-q4-fee" data-user="8192925" height="36" src="https://avatars1.githubusercontent.com/u/8192925?v=2&s=72" width="26">
+            </a>
+            <a href="/lizajean" aria-label="lizajean" class="vcard-org-avatar tooltipped tooltipped-s" itemprop="follows">
+              <img alt="lizajean" data-user="8246974" height="36" src="https://avatars1.githubusercontent.com/u/8246974?v=2&s=72" width="36">
+            </a>
+          </div>
+        </div>
+    <% }); %>
+
+  </script>
+
+ <script type="text/template" id="reposTmpl">
+  <% _.each(reposData, function(element, index, list) { %>
+    <div class="reposTmplWrapper">
+      <div class="reposImg">
+        <span class="mega-octicon octicon-repo"></span>
+      </div>
+      <div class="reposText">
+      <a href="<%= element.clone_url %>"><%= element.name %></a>
+      <p><%= element.updated_at %></p>
+      </div>
+      <div class="reposList">
+        <ul>
+          <li><%= element.language %></li>
+          <li><a href="<%= element.stargazers_url %>"><span class="octicon octicon-star"></span><%= element.stargazers_count %></a></li>
+          <li><a href="<%= element.forks_url %>"><span class="octicon octicon-git-branch"></span><%= element.forks_count %></a></li>
+        </ul>
+      </div>
+    </div>
+  <% }); %>
+
+  </script>
+
+    <script type = "template/html" id="eventsTmpl">
+      <% _.each(eventsData, function(element, index, list) { %>
+        <% if (element.type === "PushEvent"){ %>
+          <div class="push">
+          <span class="mega-octicon octicon-git-commit"></span>
+          <p><a href="<%=element.actor.url%>"><%=element.actor.login%></a> pushed to <a href="">master</a> at <a href="<%=element.repo.url%>"><%=element.repo.name%></a> </p>
+          </div>
+          <br><a href="element.actor.url"><img src="<%=element.actor.avatar_url%>" alt=""></a>
+          <img id="tinyPic" src="<%=element.actor.avatar_url%>" alt="">
+          <a href=""> <%=element.payload.head %></a>
+           <p><%=element.payload.commits.message%></p>
+          <hr>
+        <% } else { %>
+          <% if (element.payload.ref_type === "repository"){ %>
+            <span class="octicon octicon-repo"></span>
+            <div class="create">
+            <p><a href=""></a> created repository</p> <a href=""><%=element.repo.name%></a>
+            </div>
+          <% }else{ %>
+            <span class="octicon octicon-git-branch"></span>
+            <div class="create">
+            <p><a href=""></a> created branch <a class="branch" href=""><span class="octicon octicon-git-branch"> <%=element.payload.master_branch%></a> at <a href=""><%=element.repo.name%></a></p>
+            </div>
+          <% } %>
+          <hr>
+        <% } %>
+      <% }); %>
+    </script>
+
+</head>
+<body>
+<div class="container">
+  <aside></aside>
+<div class="right">
+  <div class="tabs">
+   <ul class="tab-links">
+        <li>
+          <a href="" rel="#tab1"><span class="octicon octicon-diff-added"></span> Contributions</a>
+        </li>
+        <li class="active">
+          <a href="" rel="#tab2"><span class="octicon octicon-repo"></span> Repositories</a>
+        </li>
+        <li>
+          <a href="" rel="#tab3"><span class="octicon octicon-rss"></span> Public Activity</a>
+        </li>
+        <li>
+          <button class="editProfile" href=""><span class="octicon octicon-pencil"></span> Edit Profile</button>
+        </li>
+    </ul>
+
+     <div class="tab-content">
+        <div id="tab1" class="tab active">
+
+        </div>
+
+        <div id="tab2" class="tab2">
+          <div class="searchBar">
+          <ul>
+            <li>
+              <form>
+                  <input type="text" placeholder="Find a repository..." required>
+                  <input class="searchButton" type="button" value="Search">
+              </form>
+            </li>
+            <li class="searchBarOptions all">
+              <a href="" rel="all">All</a>
+            </li>
+            <li>
+              <a href="" rel="public">Public</a>
+            </li>
+            <li>
+              <a href="" rel="private">Private</a>
+            </li>
+            <li>
+              <a href="" rel="sources">Sources</a>
+            </li>
+            <li>
+              <a href="" rel="forks">Forks</a>
+            </li>
+            <li>
+              <a href="" rel="mirrors">Mirrors</a>
+            </li>
+            <li class="newButton">
+              <button><span class="octicon octicon-repo"></span>New</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+<div id="tab3" class="tab3">
+
+        </div>
+      </div
+    </div>
+
+
+
+<script type="text/javascript" src="node_modules/underscore/underscore.js"></script>
+<script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="data.js"></script>
+<script src="scripts.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+</body>
+</html>
